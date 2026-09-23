@@ -1,10 +1,33 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { 
+  StyleSheet, 
+  View, 
+  Text, 
+  TouchableOpacity,
+  FlatList
+ } from 'react-native';
 import { 
   SafeAreaProvider, 
   SafeAreaView 
 } from 'react-native-safe-area-context';
 
+function renderItem({ item }) {
+  return (
+    <View style={styles.itemContainer}>
+      <View style={styles.itemBullet}></View>
+      <Text style={styles.itemTexto}>{item.titulo}</Text>
+      <TouchableOpacity style={styles.botaoExcluir}>
+        <Text style={styles.botaoExluirTexto}>Excluir</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
 export default function App() {
+  const tarefas = [
+    
+  ];
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -12,19 +35,20 @@ export default function App() {
         <Text style={styles.headerTitulo}>Tarefas de Estudo</Text>
         <Text style={styles.headerSubTitulo}>2 Tarefas Pendentes</Text>
       </View>
-
         
-      <View style={styles.lista}>
-        <View style={styles.itemContainer}>
-          <View style={styles.itemBullet}></View>
-          <Text style={styles.itemTexto}>Estudar para AP 1</Text>
-          <TouchableOpacity style={styles.botaoExcluir}>
-            <Text style={styles.botaoExluirTexto}>Excluir</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      
-
+      <FlatList
+        data={tarefas}
+        keyExtractor={(tarefa) => tarefa.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.lista}
+        ListEmptyComponent={
+          <View style={styles.vazioContainer}>
+            <Text style={styles.vazioTexto}>
+              Sua Lista está vazia. Adicione a primeira tarefa de estudo.
+            </Text>
+          </View>
+        }
+      />
     </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -87,5 +111,16 @@ const styles = StyleSheet.create({
     color: '#B3492F',
     fontSize: 13,
     fontWeight: '600'
+  },
+  vazioContainer: {
+    paddingTop: 48,
+    alignItems: 'center'
+  },
+  vazioTexto: {
+    fontSize: 14,
+    color: '#8C8577',
+    textAlign: 'center',
+    // paddingHorizontal: 32,
+    maxWidth: '80%' 
   }
 });
