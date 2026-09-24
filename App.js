@@ -5,7 +5,9 @@ import {
   Text, 
   TouchableOpacity,
   FlatList,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView,
+  Platform
  } from 'react-native';
 import { 
   SafeAreaProvider, 
@@ -25,28 +27,23 @@ function renderItem({ item }) {
 }
 
 export default function App() {
-  const tarefas = [
-    { id: 1, titulo: 'Tarefa 1' },
-    { id: 2, titulo: 'Tarefa 1' },
-    { id: 3, titulo: 'Tarefa 1' },
-    { id: 4, titulo: 'Tarefa 1' },
-    { id: 5, titulo: 'Tarefa 1' },
-    { id: 6, titulo: 'Tarefa 1' },
-    { id: 7, titulo: 'Tarefa 1' },
-    { id: 8, titulo: 'Tarefa 1' },
-    { id: 9, titulo: 'Tarefa 1' },
-    { id: 10, titulo: 'Tarefa 1' },
-    { id: 11, titulo: 'Tarefa 1' },
-    { id: 12, titulo: 'Tarefa 1' },
-    { id: 13, titulo: 'Tarefa 1' },
-    { id: 14, titulo: 'Tarefa 1' },
-    { id: 15, titulo: 'Tarefa 1' },
-  ];
+  const [tarefas, setTarefas] = useState([]);
+  const [novaTarefa, setNovaTarefa] = useState('');
+
+  function adicionarTarefa() {
+    const texto = novaTarefa;
+    const nova = { id: 1, titulo: texto };
+    setTarefas((tarefasAtuais) => [...tarefasAtuais, nova]);
+  }
   
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      <KeyboardAvoidingView 
+        style={styles.keyboardFlex}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <View style={styles.header}>
         <Text style={styles.headerTitulo}>Tarefas de Estudo</Text>
         <Text style={styles.headerSubTitulo}>2 Tarefas Pendentes</Text>
       </View>
@@ -72,9 +69,11 @@ export default function App() {
           style={styles.input}
         />
         <TouchableOpacity style={styles.botaoAdicionar}>
-          <Text>Adicionar</Text>
+          <Text style={styles.botaoTexto}>Adicionar</Text>
         </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
+      
     </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -173,5 +172,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 12,
     borderRadius: 10
+  },
+  botaoTexto: {
+    color: '#FFF',
+    fontWeight: '700',
+    fontSize: 14
+  },
+  keyboardFlex: {
+    flex: 1
   }
 });
