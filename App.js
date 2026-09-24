@@ -4,7 +4,8 @@ import {
   View, 
   Text, 
   TouchableOpacity,
-  FlatList
+  FlatList,
+  TextInput
  } from 'react-native';
 import { 
   SafeAreaProvider, 
@@ -25,7 +26,21 @@ function renderItem({ item }) {
 
 export default function App() {
   const tarefas = [
-    
+    { id: 1, titulo: 'Tarefa 1' },
+    { id: 2, titulo: 'Tarefa 1' },
+    { id: 3, titulo: 'Tarefa 1' },
+    { id: 4, titulo: 'Tarefa 1' },
+    { id: 5, titulo: 'Tarefa 1' },
+    { id: 6, titulo: 'Tarefa 1' },
+    { id: 7, titulo: 'Tarefa 1' },
+    { id: 8, titulo: 'Tarefa 1' },
+    { id: 9, titulo: 'Tarefa 1' },
+    { id: 10, titulo: 'Tarefa 1' },
+    { id: 11, titulo: 'Tarefa 1' },
+    { id: 12, titulo: 'Tarefa 1' },
+    { id: 13, titulo: 'Tarefa 1' },
+    { id: 14, titulo: 'Tarefa 1' },
+    { id: 15, titulo: 'Tarefa 1' },
   ];
   
   return (
@@ -49,6 +64,17 @@ export default function App() {
           </View>
         }
       />
+
+      <View style={styles.rodape}>
+        <TextInput 
+          placeholder='Ex: Estudar JavaScript'
+          placeholderTextColor='#9A9184'
+          style={styles.input}
+        />
+        <TouchableOpacity style={styles.botaoAdicionar}>
+          <Text>Adicionar</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -121,6 +147,31 @@ const styles = StyleSheet.create({
     color: '#8C8577',
     textAlign: 'center',
     // paddingHorizontal: 32,
-    maxWidth: '80%' 
+    maxWidth: '80%' // Dica do Diogo 
+  },
+  rodape: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#ECE6D8',
+  },
+  input: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ECE6D8',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    color: '#1D2B3A',
+    marginRight: 10
+  },
+  botaoAdicionar: {
+    backgroundColor: '#6B8F71',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 10
   }
 });
