@@ -7,23 +7,19 @@ import {
   FlatList,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Alert
  } from 'react-native';
 import { 
   SafeAreaProvider, 
   SafeAreaView 
 } from 'react-native-safe-area-context';
 
-function renderItem({ item }) {
-  return (
-    <View style={styles.itemContainer}>
-      <View style={styles.itemBullet}></View>
-      <Text style={styles.itemTexto}>{item.titulo}</Text>
-      <TouchableOpacity style={styles.botaoExcluir}>
-        <Text style={styles.botaoExluirTexto}>Excluir</Text>
-      </TouchableOpacity>
-    </View>
-  )
+import { renderItem } from './src/components/RenderItem';
+import { Title } from './src/components/Title';
+
+function gerarId() {
+  return Date.now().toString() + Math.random().toString(16).slice(2);
 }
 
 export default function App() {
@@ -31,10 +27,37 @@ export default function App() {
   const [novaTarefa, setNovaTarefa] = useState('');
 
   function adicionarTarefa() {
-    const texto = novaTarefa;
-    const nova = { id: 1, titulo: texto };
-    setTarefas((tarefasAtuais) => [...tarefasAtuais, nova]);
+    const texto = novaTarefa.trim();
+
+    if (texto.length === 0) {
+      return;
+    }
+
+    const tarefa = { id: gerarId(), titulo: texto }
+    setTarefas((tarefasAtuais) => [...tarefasAtuais, tarefa]);
+    setNovaTarefa('');
   }
+
+function excluirTarefa(id) {
+  setTarefas((tarefasAtuais) => 
+    tarefasAtuais.filter((tarefa) => tarefa.id !== id));
+}
+
+function confirmarExclusao(tarefa) {
+  Alert.alert(
+    'Excluir Tarefa',
+    `Deseja excluir a tarefa "${tarefa.titulo}"?`,
+    [
+      { text: 'Cancelar', style: 'cancel' },
+      { 
+        text: 'Sim', 
+        style: 'destructive', 
+        onPress: () => excluirTarefa(tarefa.id)
+      }
+    ],
+    { cancelable: true }
+  )
+}
   
   return (
     <SafeAreaProvider>
@@ -43,11 +66,9 @@ export default function App() {
         style={styles.keyboardFlex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View style={styles.header}>
-        <Text style={styles.headerTitulo}>Tarefas de Estudo</Text>
-        <Text style={styles.headerSubTitulo}>2 Tarefas Pendentes</Text>
-      </View>
-        
+      
+      <Title />
+      
       <FlatList
         data={tarefas}
         keyExtractor={(tarefa) => tarefa.id}
@@ -67,8 +88,15 @@ export default function App() {
           placeholder='Ex: Estudar JavaScript'
           placeholderTextColor='#9A9184'
           style={styles.input}
+          value={novaTarefa}
+          onChangeText={setNovaTarefa}
+          onSubmitEditing={adicionarTarefa}
+          returnKeyType='done'
         />
-        <TouchableOpacity style={styles.botaoAdicionar}>
+        <TouchableOpacity 
+          style={styles.botaoAdicionar}
+          onPress={adicionarTarefa}
+        >
           <Text style={styles.botaoTexto}>Adicionar</Text>
         </TouchableOpacity>
       </View>
@@ -84,58 +112,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FAF6EE',
   },
-  headerTitulo: {
-    fontSize: 26,
-    fontWeight: 'bold'
-  },
-  headerSubTitulo: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginTop: 4
-  },
-  header: {
-    paddingTop: 16,
-    paddingBottom: 12,
-    paddingHorizontal: 24
-  },
   lista: {
     paddingHorizontal: 24,
     paddingBottom: 16,
     flexGrow: 1
-  },
-  itemContainer: {
-    backgroundColor: '#FFF',
-    paddingVertical: 14,
-    paddingHorizontal: 14,
-    marginBottom: 10,
-    borderColor: '#ECE6D8',
-    borderWidth: 1,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  itemTexto: {
-    fontSize: 15,
-    color: '#1D2B3A',
-    flex: 1
-  },
-  itemBullet: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#6B8F71',
-    marginRight: 12
-  },
-  botaoExcluir: {
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    backgroundColor: '#FBEAE6'
-  },
-  botaoExluirTexto: {
-    color: '#B3492F',
-    fontSize: 13,
-    fontWeight: '600'
   },
   vazioContainer: {
     paddingTop: 48,
