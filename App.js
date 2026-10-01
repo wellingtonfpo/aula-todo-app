@@ -17,6 +17,7 @@ import {
 
 import { renderItem } from './src/components/RenderItem';
 import { Title } from './src/components/Title';
+import { Footer } from './src/components/Footer';
 
 function gerarId() {
   return Date.now().toString() + Math.random().toString(16).slice(2);
@@ -66,42 +67,30 @@ function confirmarExclusao(tarefa) {
         style={styles.keyboardFlex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-      
-      <Title />
-      
-      <FlatList
-        data={tarefas}
-        keyExtractor={(tarefa) => tarefa.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.lista}
-        ListEmptyComponent={
-          <View style={styles.vazioContainer}>
-            <Text style={styles.vazioTexto}>
-              Sua Lista está vazia. Adicione a primeira tarefa de estudo.
-            </Text>
-          </View>
-        }
-      />
+        <Title texto={'Lista de Tarefas'}/>
+        
+        <Title texto={'Lista de Compras'}/>
 
-      <View style={styles.rodape}>
-        <TextInput 
-          placeholder='Ex: Estudar JavaScript'
-          placeholderTextColor='#9A9184'
-          style={styles.input}
+        <FlatList
+          data={tarefas}
+          keyExtractor={(tarefa) => tarefa.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.lista}
+          ListEmptyComponent={
+            <View style={styles.vazioContainer}>
+              <Text style={styles.vazioTexto}>
+                Sua Lista está vazia. Adicione a primeira tarefa de estudo.
+              </Text>
+            </View>
+          }
+        />
+        
+        <Footer 
           value={novaTarefa}
           onChangeText={setNovaTarefa}
-          onSubmitEditing={adicionarTarefa}
-          returnKeyType='done'
+          adicionarTarefa={adicionarTarefa}
         />
-        <TouchableOpacity 
-          style={styles.botaoAdicionar}
-          onPress={adicionarTarefa}
-        >
-          <Text style={styles.botaoTexto}>Adicionar</Text>
-        </TouchableOpacity>
-      </View>
       </KeyboardAvoidingView>
-      
     </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -127,36 +116,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     // paddingHorizontal: 32,
     maxWidth: '80%' // Dica do Diogo 
-  },
-  rodape: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#ECE6D8',
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ECE6D8',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    color: '#1D2B3A',
-    marginRight: 10
-  },
-  botaoAdicionar: {
-    backgroundColor: '#6B8F71',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 10
-  },
-  botaoTexto: {
-    color: '#FFF',
-    fontWeight: '700',
-    fontSize: 14
   },
   keyboardFlex: {
     flex: 1

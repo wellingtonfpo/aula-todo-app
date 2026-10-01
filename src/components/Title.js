@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export function Title() {
+export function Title({ texto }) {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitulo}>Tarefas de Estudo</Text>
+      <Text style={styles.headerTitulo}>{texto}</Text>
       <Text style={styles.headerSubTitulo}>2 Tarefas Pendentes</Text>
     </View>
   );
